@@ -1,197 +1,776 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AnisLuxury — Articles de luxe de seconde main</title>
-  <meta name="description" content="Boutique de revente d'articles de luxe authentiques. Sacs, accessoires et prêt-à-porter haut de gamme." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anis Luxury Paris — Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">Anis Luxury Paris</a>
-      <ul class="nav-links">
-        <li><a href="#about">À propos</a></li>
-        <li><a href="#articles">Nos articles</a></li>
-        <li><a href="#how">Comment acheter</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
+<!-- ── AUTH OVERLAY ── -->
+<div id="authOverlay" class="auth-overlay" style="display: flex;">
 
-  <!-- Hero -->
-  <section class="hero-section" id="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <p class="hero-tagline">Luxe · Authenticité · Élégance</p>
-      <h1 class="hero-title">Anis Luxury Paris </h1>
-      <p class="hero-subtitle">Articles de luxe de seconde main, soigneusement sélectionnés pour vous.</p>
-      <a href="https://www.vinted.fr/member/156451414" target="_blank" rel="noopener" class="cta-button">
-        Voir notre boutique Vinted
-      </a>
+    <!-- SETUP (première fois) -->
+    <div id="auth-setup" style="display:none">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span class="auth-logo-dot"></span><h1>Anis Luxury Paris</h1>
+                <p>Créez votre compte pour accéder au dashboard</p>
+            </div>
+            <h2>Créer un compte</h2>
+            <div id="setup-error" class="auth-msg error"></div>
+            <div id="setup-success" class="auth-msg success"></div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>Adresse email</label>
+                <input type="email" id="setup-user" placeholder="votre@email.com" autocomplete="email">
+            </div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>Mot de passe (min. 8 caractères)</label>
+                <input type="password" id="setup-pass" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" id="setup-confirm" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="doSetup()">🔐 Créer le compte</button>
+            <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted)">Déjà un compte ? <a href="#" onclick="showAuthLogin();return false;" style="color:var(--accent)">Se connecter</a></p>
+        </div>
     </div>
-  </section>
 
-  <!-- À propos -->
-  <section class="about-section" id="about">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Qui sommes-nous</span>
-        <h2 class="section-title">L'excellence à portée de main</h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="about-icon">✦</div>
-          <h3>Authenticité garantie</h3>
-          <p>Chaque article est vérifié et authentifié avant d'être mis en vente. Nous ne proposons que du vrai luxe.</p>
+    <!-- LOGIN -->
+    <div id="auth-login" style="display:block">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span class="auth-logo-dot"></span><h1>Anis Luxury Paris</h1>
+                <p>Connectez-vous pour accéder au dashboard</p>
+            </div>
+            <h2>Connexion</h2>
+            <div id="login-error" class="auth-msg error"></div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>Adresse email</label>
+                <input type="email" id="login-user" placeholder="votre@email.com" autocomplete="email">
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label>Mot de passe</label>
+                <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="doLogin()">→ Se connecter</button>
+            <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted)">
+                Pas encore de compte ? <a href="#" onclick="showAuthSetup();return false;" style="color:var(--accent)">S'inscrire</a>
+                &nbsp;·&nbsp;
+                <a href="#" onclick="showForgotPassword();return false;" style="color:var(--accent)">Mot de passe oublié ?</a>
+            </p>
         </div>
-        <div class="about-card">
-          <div class="about-icon">✦</div>
-          <h3>Sélection rigoureuse</h3>
-          <p>Nous sélectionnons uniquement des pièces en excellent état, issues des plus grandes maisons de luxe.</p>
-        </div>
-        <div class="about-card">
-          <div class="about-icon">✦</div>
-          <h3>Prix justes</h3>
-          <p>Le luxe accessible. Des prix honnêtes pour des articles d'exception, bien en dessous de la boutique neuf.</p>
-        </div>
-      </div>
     </div>
-  </section>
 
-  <!-- Nos articles -->
-  <section class="articles-section" id="articles">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Notre sélection</span>
-        <h2 class="section-title">Nos articles</h2>
-        <p class="section-desc">Retrouvez nos dernières pièces disponibles directement sur Vinted.</p>
-      </div>
-      <div class="categories-grid">
-        <div class="category-card">
-          <div class="category-icon">👜</div>
-          <h3>Sacs & Maroquinerie</h3>
-          <p>Louis Vuitton, Chanel, Gucci, Prada…</p>
+    <!-- MOT DE PASSE OUBLIÉ -->
+    <div id="auth-forgot" style="display:none">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span class="auth-logo-dot"></span><h1>Anis Luxury Paris</h1>
+                <p>Réinitialisez votre mot de passe</p>
+            </div>
+            <h2>Mot de passe oublié</h2>
+            <div id="forgot-error" class="auth-msg error"></div>
+            <div id="forgot-success" class="auth-msg success"></div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label>Adresse email</label>
+                <input type="email" id="forgot-user" placeholder="votre@email.com" autocomplete="email">
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="doForgotPassword()">📧 Envoyer le lien de réinitialisation</button>
+            <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted)">
+                <a href="#" onclick="showAuthLogin();return false;" style="color:var(--accent)">← Retour à la connexion</a>
+            </p>
         </div>
-        <div class="category-card">
-          <div class="category-icon">⌚</div>
-          <h3>Accessoires</h3>
-          <p>Ceintures, portefeuilles, lunettes de luxe</p>
-        </div>
-        <div class="category-card">
-          <div class="category-icon">👗</div>
-          <h3>Prêt-à-porter</h3>
-          <p>Vêtements et pièces mode haut de gamme</p>
-        </div>
-        <div class="category-card">
-          <div class="category-icon">👟</div>
-          <h3>Chaussures</h3>
-          <p>Sneakers et chaussures de créateurs</p>
-        </div>
-      </div>
-      <div class="articles-cta">
-        <a href="https://www.vinted.fr/member/156451414" target="_blank" rel="noopener" class="cta-button cta-button--dark">
-          Voir tous nos articles sur Vinted
-        </a>
-      </div>
     </div>
-  </section>
 
-  <!-- Comment acheter -->
-  <section class="how-section" id="how">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Simple & rapide</span>
-        <h2 class="section-title">Comment acheter ?</h2>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <h3>Visitez notre boutique</h3>
-          <p>Rendez-vous sur notre profil Vinted pour parcourir tous nos articles disponibles.</p>
+    <!-- NOUVEAU MOT DE PASSE (depuis lien email) -->
+    <div id="auth-reset" style="display:none">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span class="auth-logo-dot"></span><h1>Anis Luxury Paris</h1>
+                <p>Choisissez un nouveau mot de passe</p>
+            </div>
+            <h2>Nouveau mot de passe</h2>
+            <div id="reset-error" class="auth-msg error"></div>
+            <div id="reset-success" class="auth-msg success"></div>
+            <div class="form-group" style="margin-bottom:12px">
+                <label>Nouveau mot de passe (min. 8 caractères)</label>
+                <input type="password" id="reset-pass" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <div class="form-group" style="margin-bottom:20px">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" id="reset-confirm" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="doResetPassword()">🔐 Changer le mot de passe</button>
         </div>
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <h3>Choisissez votre article</h3>
-          <p>Consultez les photos, la description et posez vos questions via la messagerie Vinted.</p>
+    </div>
+
+</div>
+
+<!-- ── CONTENU APP (masqué jusqu'à auth) ── -->
+<div id="app-content" style="display:none">
+
+<header>
+    <div class="logo">Anis Luxury <span>Paris</span></div>
+    <div style="display:flex;align-items:center;gap:14px;">
+        <div class="header-date" id="headerDate"></div>
+        <button class="btn-logout" onclick="doLogout()">⎋ Déconnexion</button>
+    </div>
+</header>
+
+<div class="app-layout">
+
+<nav id="sidebar">
+    <div class="nav-header">
+        <div class="nav-logo">
+            <div class="nav-logo-dot">AL</div>
+            <span class="nav-logo-text">Anis Luxury Paris</span>
         </div>
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <h3>Achetez en toute sécurité</h3>
-          <p>Le paiement est sécurisé par Vinted. Livraison rapide avec suivi de colis.</p>
+        <button class="nav-toggle" onclick="toggleSidebar()" id="navToggleBtn" title="Réduire">❮</button>
+    </div>
+
+    <div class="nav-body">
+        <div class="nav-section-label"><span>Principal</span></div>
+
+        <button class="active" onclick="showTab('dashboard', this)" data-label="Dashboard">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">📊</span></div>
+                <span class="nav-label">Dashboard</span>
+            </div>
+        </button>
+        <button onclick="showTab('ventes', this)" data-label="Ventes">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">🛍️</span></div>
+                <span class="nav-label">Ventes</span>
+            </div>
+        </button>
+        <button onclick="showTab('depenses', this)" data-label="Dépenses">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">💸</span></div>
+                <span class="nav-label">Dépenses</span>
+            </div>
+        </button>
+        <button onclick="showTab('commandes', this)" data-label="Commandes">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">📦</span></div>
+                <span class="nav-label">Commandes</span>
+            </div>
+        </button>
+        <div class="nav-section-label"><span>Finance</span></div>
+
+        <button onclick="showTab('urssaf', this)" data-label="URSSAF">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">🏛️</span></div>
+                <span class="nav-label">URSSAF</span>
+            </div>
+        </button>
+        <button onclick="showTab('objectifs', this)" data-label="Objectifs">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">🎯</span></div>
+                <span class="nav-label">Objectifs</span>
+            </div>
+        </button>
+
+        <div class="nav-section-label"><span>Config</span></div>
+
+        <button onclick="showTab('parametres', this)" data-label="Paramètres">
+            <div class="nav-btn-inner">
+                <div class="nav-icon-wrap"><span class="nav-icon">⚙️</span></div>
+                <span class="nav-label">Paramètres</span>
+            </div>
+        </button>
+    </div>
+</nav>
+
+<main>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="tab-dashboard" class="section active">
+        <div id="dashboardKPIs"></div>
+
+        <div class="chart-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div class="section-title" style="margin-bottom:0">Évolution <span id="chartModeLabel">mensuelle</span> — <span id="chartYear"></span></div>
+                <div style="display:flex;gap:4px;">
+                    <button id="btnChartMois" class="btn btn-gold" style="padding:5px 12px;font-size:12px;" onclick="setChartMode('mois')">Mensuel</button>
+                    <button id="btnChartTrim" class="btn btn-outline" style="padding:5px 12px;font-size:12px;" onclick="setChartMode('trim')">Trimestriel</button>
+                </div>
+            </div>
+            <div style="display:flex;gap:16px;margin-bottom:4px;">
+                <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)">
+                    <span style="width:12px;height:12px;background:var(--gold);border-radius:2px;display:inline-block"></span>CA
+                </span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)">
+                    <span style="width:12px;height:12px;background:var(--green);border-radius:2px;display:inline-block"></span>Bénéfice net
+                </span>
+            </div>
+            <div class="chart-bars" id="chartBars"></div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Contact -->
-  <section class="contact-section" id="contact">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Nous joindre</span>
-        <h2 class="section-title">Contact</h2>
-        <p class="section-desc">Une question ? Besoin d'un renseignement ? Nous sommes disponibles.</p>
-      </div>
-      <div class="contact-grid">
-        <a href="https://www.vinted.fr/member/156451414" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">🛍️</div>
-          <h3>Vinted</h3>
-          <p>Messagerie Vinted</p>
-          <span class="contact-link">Nous contacter →</span>
-        </a>
-        <a href="mailto:nefikhaanis78@gmail.com" class="contact-card">
-          <div class="contact-icon">✉️</div>
-          <h3>Email</h3>
-          <p>nefikhaanis78@gmail.com</p>
-          <span class="contact-link">Envoyer un email →</span>
-        </a>
-        <a href="https://wa.me/33782146008" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">💬</div>
-          <h3>WhatsApp</h3>
-          <p>+33 7 82 14 60 08</p>
-          <span class="contact-link">Nous écrire →</span>
-        </a>
-      </div>
-    </div>
-  </section>
+        <div class="section-title">Déclarations URSSAF — Trimestres <span id="dashUrssafYear"></span></div>
+        <div class="urssaf-grid" id="dashboardUrssafGrid" style="margin-bottom:24px"></div>
 
-  <!-- Avis clients -->
-  <section class="reviews-section" id="reviews">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Ce qu'ils disent</span>
-        <h2 class="section-title">Avis clients</h2>
-        <div class="reviews-stars-header">★★★★★ <span>100% de satisfaction</span></div>
-      </div>
-      <div class="slider-wrapper">
-        <div class="slider-track" id="slider-track"></div>
-      </div>
-      <div class="slider-controls">
-        <button class="slider-btn" id="prev-btn" aria-label="Précédent">&#8592;</button>
-        <div class="slider-dots" id="slider-dots"></div>
-        <button class="slider-btn" id="next-btn" aria-label="Suivant">&#8594;</button>
-      </div>
+        <div class="section-title">Dernières ventes</div>
+        <div class="table-wrapper" id="recentSalesTable"></div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-logo">AnisLuxury</p>
-      <p class="footer-text">© 2026 AnisLuxury — Tous droits réservés</p>
-      <p class="footer-sub">Boutique de revente d'articles de luxe authentiques</p>
+    <!-- ===== VENTES ===== -->
+    <div id="tab-ventes" class="section">
+
+        <!-- Sous-onglets -->
+        <div class="sub-nav">
+            <button class="sub-tab active" id="stab-encours" onclick="showVenteSubTab('encours', this)">🏷️ En cours de vente</button>
+            <button class="sub-tab" id="stab-historique" onclick="showVenteSubTab('historique', this)">📋 Historique</button>
+        </div>
+
+        <!-- Panel En cours de vente -->
+        <div id="vpanel-encours" class="cmd-panel active">
+            <div class="form-card">
+                <div class="collapsible-header" onclick="toggleCollapse('formEnCours')">
+                    <h3>➕ Mettre un article en vente</h3>
+                    <span id="formEnCoursToggle" style="color:var(--gold);font-size:18px">▲</span>
+                </div>
+                <div id="formEnCours" class="collapsible-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date de mise en vente</label>
+                            <input type="date" id="ec_date">
+                        </div>
+                        <div class="form-group">
+                            <label>Marque</label>
+                            <select id="ec_marque" onchange="onECMarqueChange()">
+                                <option value="">— Sélectionner une marque —</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Modèle</label>
+                            <select id="ec_modele" onchange="onECModeleChange()">
+                                <option value="">— Sélectionner un modèle —</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="ec_article_group" style="display:none">
+                            <label>Article personnalisé</label>
+                            <input type="text" id="ec_article" placeholder="Nom de l'article">
+                        </div>
+                        <div class="form-group">
+                            <label>Prix d'achat (€)</label>
+                            <input type="number" id="ec_achat" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Prix demandé (€)</label>
+                            <input type="number" id="ec_demande" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Plateforme</label>
+                            <select id="ec_plateforme">
+                                <option value="Vinted">Vinted</option>
+                                <option value="Vestiaire Collective">Vestiaire Collective</option>
+                                <option value="eBay">eBay</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Leboncoin">Leboncoin</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (optionnel)</label>
+                            <input type="text" id="ec_notes" placeholder="État, référence, remarque...">
+                        </div>
+                    </div>
+                    <button class="btn btn-gold" onclick="addVenteEnCours()">✅ Mettre en vente</button>
+                </div>
+            </div>
+
+            <div class="section-title">Articles en cours de vente</div>
+            <div class="table-wrapper" id="enCoursTable"></div>
+            <div class="totaux-bar" id="enCoursTotaux"></div>
+        </div>
+
+        <!-- Panel Historique -->
+        <div id="vpanel-historique" class="cmd-panel">
+            <div class="form-card">
+                <div class="collapsible-header" onclick="toggleCollapse('formVente')">
+                    <h3>➕ Ajouter une vente manuellement</h3>
+                    <span id="formVenteToggle" style="color:var(--gold);font-size:18px">▲</span>
+                </div>
+                <div id="formVente" class="collapsible-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="v_date">
+                        </div>
+                        <div class="form-group">
+                            <label>Marque</label>
+                            <select id="v_marque" onchange="onMarqueChange()">
+                                <option value="">— Sélectionner une marque —</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Modèle</label>
+                            <select id="v_modele" onchange="onModeleChange()">
+                                <option value="">— Sélectionner un modèle —</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="v_article_group" style="display:none">
+                            <label>Article personnalisé</label>
+                            <input type="text" id="v_article" placeholder="Nom de l'article">
+                        </div>
+                        <div class="form-group">
+                            <label>Prix d'achat (€)</label>
+                            <input type="number" id="v_achat" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Prix de vente (€)</label>
+                            <input type="number" id="v_vente" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Frais de port payés (€)</label>
+                            <input type="number" id="v_portPaye" placeholder="0.00" step="0.01" min="0">
+                            <span class="info-text">Ce que vous avez payé pour envoyer</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Frais de port reçus (€)</label>
+                            <input type="number" id="v_portRecu" placeholder="0.00" step="0.01" min="0">
+                            <span class="info-text">Ce que l'acheteur vous a remboursé</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Plateforme</label>
+                            <select id="v_plateforme">
+                                <option value="Vinted">Vinted</option>
+                                <option value="Vestiaire Collective">Vestiaire Collective</option>
+                                <option value="eBay">eBay</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Leboncoin">Leboncoin</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (optionnel)</label>
+                            <input type="text" id="v_notes" placeholder="Référence, état, remarque...">
+                        </div>
+                    </div>
+
+                    <div id="ventePreview" style="background:var(--dark);border:1px solid var(--dark-border);border-radius:8px;padding:14px;margin-bottom:14px;display:none;">
+                        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Aperçu calcul</div>
+                        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                            <div><span style="color:var(--text-muted);font-size:12px">Bénéfice brut : </span><span id="prev_brut" style="font-weight:700"></span></div>
+                            <div><span style="color:var(--text-muted);font-size:12px">URSSAF (sur CA) : </span><span id="prev_urssaf" style="font-weight:700;color:var(--blue)"></span></div>
+                            <div><span style="color:var(--text-muted);font-size:12px">Bénéfice net : </span><span id="prev_net" style="font-weight:700"></span></div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-gold" onclick="addVente()">✅ Enregistrer la vente</button>
+                </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+                <div class="section-title" style="margin-bottom:0">Historique des ventes</div>
+                <div class="filters" style="margin-bottom:0">
+                    <select id="filterMois" onchange="renderVentes()">
+                        <option value="">Tous les mois</option>
+                    </select>
+                    <select id="filterPlateforme" onchange="renderVentes()">
+                        <option value="">Toutes plateformes</option>
+                        <option value="Vinted">Vinted</option>
+                        <option value="Vestiaire Collective">Vestiaire Collective</option>
+                        <option value="eBay">eBay</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Leboncoin">Leboncoin</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrapper" id="ventesTable"></div>
+            <div class="totaux-bar" id="ventesTotaux"></div>
+        </div>
+
     </div>
-  </footer>
 
-  <script src="script.js"></script>
+    <!-- ===== DEPENSES ===== -->
+    <div id="tab-depenses" class="section">
+        <div class="form-card">
+            <div class="collapsible-header" onclick="toggleCollapse('formDepense')">
+                <h3>➕ Ajouter une dépense</h3>
+                <span id="formDepenseToggle" style="color:var(--gold);font-size:18px">▲</span>
+            </div>
+            <div id="formDepense" class="collapsible-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="d_date">
+                    </div>
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select id="d_categorie">
+                            <option value="Emballage">Emballage</option>
+                            <option value="Transport">Transport / Déplacements</option>
+                            <option value="Abonnement">Abonnements</option>
+                            <option value="Matériel">Matériel</option>
+                            <option value="Frais bancaires">Frais bancaires</option>
+                            <option value="Achat stock">Achat stock</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="d_desc" placeholder="Ex : Papier bulle, sachets kraft...">
+                    </div>
+                    <div class="form-group">
+                        <label>Montant (€)</label>
+                        <input type="number" id="d_montant" placeholder="0.00" step="0.01" min="0">
+                    </div>
+                </div>
+                <button class="btn btn-gold" onclick="addDepense()">✅ Enregistrer la dépense</button>
+            </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+            <div class="section-title" style="margin-bottom:0">Historique des dépenses</div>
+            <div class="filters" style="margin-bottom:0">
+                <select id="filterDepenseMois" onchange="renderDepenses()">
+                    <option value="">Tous les mois</option>
+                </select>
+                <select id="filterDepenseCat" onchange="renderDepenses()">
+                    <option value="">Toutes catégories</option>
+                    <option value="Emballage">Emballage</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Abonnement">Abonnements</option>
+                    <option value="Matériel">Matériel</option>
+                    <option value="Frais bancaires">Frais bancaires</option>
+                    <option value="Achat stock">Achat stock</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrapper" id="depensesTable"></div>
+        <div class="totaux-bar" id="depensesTotaux"></div>
+    </div>
+
+    <!-- ===== URSSAF ===== -->
+    <div id="tab-urssaf" class="section">
+        <div class="alert alert-info">
+            ℹ️ <strong>Régime micro-entreprise — Commerce (achat-revente)</strong><br>
+            Taux de cotisations sociales : <strong id="urssafRateDisplay"></strong> du CA brut.<br>
+            Déclarations trimestrielles sur <strong>autoentrepreneur.urssaf.fr</strong>
+        </div>
+
+        <div class="cards-grid" id="urssafCards"></div>
+
+        <div class="section-title">Détail par trimestre — <span id="urssafYear"></span></div>
+        <div class="urssaf-grid" id="urssafTrimestreGrid"></div>
+
+        <div class="alert alert-warning">
+            ⚠️ Ces calculs sont des <strong>estimations</strong>. Vérifiez toujours vos déclarations sur <strong>autoentrepreneur.urssaf.fr</strong>
+        </div>
+    </div>
+
+    <!-- ===== OBJECTIFS ===== -->
+    <div id="tab-objectifs" class="section">
+        <div class="form-card">
+            <h3>🎯 Mes objectifs — <span id="objectifYear" style="font-weight:300;color:var(--text-muted)"></span></h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Objectif CA annuel (€)</label>
+                    <input type="number" id="obj_ca_annuel" placeholder="Ex : 10 000" step="100" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Objectif CA mensuel (€)</label>
+                    <input type="number" id="obj_ca_mensuel" placeholder="Ex : 800" step="50" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Objectif bénéfice mensuel (€)</label>
+                    <input type="number" id="obj_benef_mensuel" placeholder="Ex : 400" step="50" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Objectif ventes / mois</label>
+                    <input type="number" id="obj_nb_ventes" placeholder="Ex : 20" step="1" min="0">
+                </div>
+            </div>
+            <button class="btn btn-gold" onclick="saveObjectifs()">💾 Sauvegarder les objectifs</button>
+        </div>
+
+        <div class="section-title">Progression — Mois en cours</div>
+        <div id="objectifsProgress"></div>
+
+        <div class="section-title" style="margin-top:20px">Progression — Année en cours</div>
+        <div id="objectifsProgressAnnuel"></div>
+    </div>
+
+    <!-- ===== PARAMETRES ===== -->
+    <div id="tab-parametres" class="section">
+        <div class="settings-grid">
+            <div class="settings-card">
+                <h3>⚙️ Paramètres fiscaux</h3>
+                <div class="form-group" style="margin-bottom:14px">
+                    <label>Taux URSSAF (%)</label>
+                    <input type="number" id="s_urssaf" step="0.1" min="0" max="50">
+                    <span class="info-text">Commerce achat-revente : 12,3% (2026)</span>
+                </div>
+                <div class="form-group" style="margin-bottom:14px">
+                    <label>Seuil CA annuel micro-entreprise (€)</label>
+                    <input type="number" id="s_seuil" step="100">
+                    <span class="info-text">Seuil 2026 : 188 700 € pour le commerce</span>
+                </div>
+                <button class="btn btn-gold" onclick="saveParametres()">💾 Sauvegarder</button>
+            </div>
+
+            <div class="settings-card">
+                <h3>📦 Sauvegarde des données</h3>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <button class="btn btn-outline" onclick="exportData()">⬇️ Exporter (JSON — sauvegarde complète)</button>
+                    <button class="btn btn-outline" onclick="exportCSV()">📊 Exporter ventes (CSV — Excel)</button>
+                    <div style="border-top:1px solid var(--dark-border);padding-top:10px;margin-top:4px;">
+                        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Restaurer une sauvegarde :</p>
+                        <input type="file" id="importFile" accept=".json" onchange="importData(event)" style="display:none">
+                        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">⬆️ Importer (JSON)</button>
+                    </div>
+                    <div style="border-top:1px solid var(--dark-border);padding-top:10px;margin-top:4px;">
+                        <button class="btn" style="background:rgba(231,76,60,0.1);color:var(--red);border:1px solid rgba(231,76,60,0.3);" onclick="clearAllData()">🗑️ Effacer toutes les données</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3>ℹ️ Informations</h3>
+                <div style="font-size:13px;color:var(--text-muted);line-height:2;">
+                    <p><strong style="color:var(--text)">Version :</strong> 1.0</p>
+                    <p><strong style="color:var(--text)">Données :</strong> Stockées localement (localStorage)</p>
+                    <p><strong style="color:var(--text)">Sécurité :</strong> Aucune donnée envoyée sur internet</p>
+                    <p><strong style="color:var(--text)">Ventes enregistrées :</strong> <span id="statsVentes"></span></p>
+                    <p><strong style="color:var(--text)">Dépenses enregistrées :</strong> <span id="statsDepenses"></span></p>
+                    <p style="margin-top:10px;font-size:11px;line-height:1.6;">
+                        ⚠️ Pensez à exporter vos données régulièrement. Si vous videz le cache de votre navigateur, les données seront perdues.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== COMMANDES ===== -->
+    <div id="tab-commandes" class="section">
+
+        <!-- Sous-onglets -->
+        <div class="sub-nav">
+            <button class="sub-tab active" id="stab-transit" onclick="showCommandeSubTab('transit', this)">🚚 En transit</button>
+            <button class="sub-tab" id="stab-reception" onclick="showCommandeSubTab('reception', this)">📬 Valider réception</button>
+            <button class="sub-tab" id="stab-stock" onclick="showCommandeSubTab('stock', this)">🗄️ Stock</button>
+        </div>
+
+        <!-- Panel En transit -->
+        <div id="cpanel-transit" class="cmd-panel active">
+            <div class="form-card">
+                <div class="collapsible-header" onclick="toggleCollapse('formCommande')">
+                    <h3>➕ Ajouter une commande</h3>
+                    <span id="formCommandeToggle" style="color:var(--gold);font-size:18px">▲</span>
+                </div>
+                <div id="formCommande" class="collapsible-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date de commande</label>
+                            <input type="date" id="c_date">
+                        </div>
+                        <div class="form-group">
+                            <label>Marque</label>
+                            <select id="c_marque" onchange="onCMarqueChange()">
+                                <option value="">— Sélectionner une marque —</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Modèle</label>
+                            <select id="c_modele" onchange="onCModeleChange()">
+                                <option value="">— Sélectionner un modèle —</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="c_article_group" style="display:none">
+                            <label>Article personnalisé</label>
+                            <input type="text" id="c_article" placeholder="Nom de l'article">
+                        </div>
+                        <div class="form-group">
+                            <label>Fournisseur / Vendeur</label>
+                            <input type="text" id="c_fournisseur" value="WA2S FRS">
+                        </div>
+                        <div class="form-group">
+                            <label>Prix d'achat (€)</label>
+                            <input type="number" id="c_prix" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Statut initial</label>
+                            <select id="c_statut">
+                                <option value="En cours">⏳ En cours</option>
+                                <option value="En cours d'envoi">🚚 En cours d'envoi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (numéro de suivi, ref...)</label>
+                            <input type="text" id="c_notes" placeholder="Optionnel">
+                        </div>
+                    </div>
+                    <button class="btn btn-gold" onclick="addCommande()">✅ Enregistrer la commande</button>
+                </div>
+            </div>
+
+            <div class="section-title">Commandes en cours &amp; en envoi</div>
+            <div class="table-wrapper" id="transitTable"></div>
+            <div class="totaux-bar" id="transitTotaux"></div>
+        </div>
+
+        <!-- Panel Réception -->
+        <div id="cpanel-reception" class="cmd-panel">
+            <div class="alert alert-info" style="margin-bottom:20px">
+                📬 Cet onglet affiche les commandes <strong>en cours d'envoi</strong>. Cliquez sur <strong>✅ Reçu</strong> dès que le colis arrive.
+            </div>
+            <div class="section-title">À réceptionner</div>
+            <div id="receptionList"></div>
+        </div>
+
+        <!-- Panel Stock -->
+        <div id="cpanel-stock" class="cmd-panel">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+                <div class="section-title" style="margin-bottom:0">Articles en stock</div>
+                <div class="filters" style="margin-bottom:0">
+                    <select id="filterStockMarque" onchange="renderStock()">
+                        <option value="">Toutes marques</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper" id="stockTable"></div>
+            <div class="totaux-bar" id="stockTotaux"></div>
+        </div>
+
+    </div>
+
+</main>
+
+</div><!-- /.app-layout -->
+
+<!-- ── MODALE VENDU ── -->
+<div id="venduModal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>💰 Confirmer la vente</h2>
+            <button class="modal-close" onclick="closeVenduModal()">×</button>
+        </div>
+        <input type="hidden" id="vendu_ec_id">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Confirmez les détails de la vente. Le prix de vente est pré-rempli avec votre prix demandé.</div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Date de vente</label>
+                <input type="date" id="vendu_date" oninput="updateVenduPreview()">
+            </div>
+            <div class="form-group">
+                <label>Prix de vente effectif (€)</label>
+                <input type="number" id="vendu_prix" placeholder="0.00" step="0.01" min="0" oninput="updateVenduPreview()">
+            </div>
+            <div class="form-group">
+                <label>Frais de port payés (€)</label>
+                <input type="number" id="vendu_portPaye" placeholder="0.00" step="0.01" min="0" oninput="updateVenduPreview()">
+            </div>
+            <div class="form-group">
+                <label>Frais de port reçus (€)</label>
+                <input type="number" id="vendu_portRecu" placeholder="0.00" step="0.01" min="0" oninput="updateVenduPreview()">
+            </div>
+            <div class="form-group">
+                <label>Plateforme</label>
+                <select id="vendu_plateforme">
+                    <option value="Vinted">Vinted</option>
+                    <option value="Vestiaire Collective">Vestiaire Collective</option>
+                    <option value="eBay">eBay</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Leboncoin">Leboncoin</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Notes (optionnel)</label>
+                <input type="text" id="vendu_notes" placeholder="Optionnel">
+            </div>
+        </div>
+        <div class="modal-preview">
+            <div><span style="font-size:12px;color:var(--text-muted)">Bénéfice brut : </span><strong id="vprev_brut">—</strong></div>
+            <div><span style="font-size:12px;color:var(--text-muted)">URSSAF : </span><strong id="vprev_urssaf">—</strong></div>
+            <div><span style="font-size:12px;color:var(--text-muted)">Bénéfice net : </span><strong id="vprev_net">—</strong></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeVenduModal()">Annuler</button>
+            <button class="btn btn-gold" onclick="confirmVendu()">💾 Confirmer la vente</button>
+        </div>
+    </div>
+</div>
+
+<!-- ── MODALE MODIFICATION VENTE ── -->
+<div id="editModal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>✏️ Modifier la vente</h2>
+            <button class="modal-close" onclick="closeEditModal()">×</button>
+        </div>
+
+        <input type="hidden" id="edit_id">
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="edit_date" oninput="updateEditPreview()">
+            </div>
+            <div class="form-group">
+                <label>Article</label>
+                <input type="text" id="edit_article" placeholder="Nom de l'article">
+            </div>
+            <div class="form-group">
+                <label>Prix d'achat (€)</label>
+                <input type="number" id="edit_achat" placeholder="0.00" step="0.01" min="0" oninput="updateEditPreview()">
+            </div>
+            <div class="form-group">
+                <label>Prix de vente (€)</label>
+                <input type="number" id="edit_vente" placeholder="0.00" step="0.01" min="0" oninput="updateEditPreview()">
+            </div>
+            <div class="form-group">
+                <label>Frais de port payés (€)</label>
+                <input type="number" id="edit_portPaye" placeholder="0.00" step="0.01" min="0" oninput="updateEditPreview()">
+            </div>
+            <div class="form-group">
+                <label>Frais de port reçus (€)</label>
+                <input type="number" id="edit_portRecu" placeholder="0.00" step="0.01" min="0" oninput="updateEditPreview()">
+            </div>
+            <div class="form-group">
+                <label>Plateforme</label>
+                <select id="edit_plateforme">
+                    <option value="Vinted">Vinted</option>
+                    <option value="Vestiaire Collective">Vestiaire Collective</option>
+                    <option value="eBay">eBay</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Leboncoin">Leboncoin</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <input type="text" id="edit_notes" placeholder="Optionnel">
+            </div>
+        </div>
+
+        <div class="modal-preview">
+            <div><span style="font-size:12px;color:var(--text-muted)">Bénéfice brut : </span><strong id="eprev_brut">—</strong></div>
+            <div><span style="font-size:12px;color:var(--text-muted)">URSSAF : </span><strong id="eprev_urssaf">—</strong></div>
+            <div><span style="font-size:12px;color:var(--text-muted)">Bénéfice net : </span><strong id="eprev_net">—</strong></div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeEditModal()">Annuler</button>
+            <button class="btn btn-gold" onclick="saveEditVente()">💾 Sauvegarder</button>
+        </div>
+    </div>
+</div>
+
+<div id="chartTooltip"></div>
+
+</div><!-- /#app-content -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+
 </body>
 </html>
